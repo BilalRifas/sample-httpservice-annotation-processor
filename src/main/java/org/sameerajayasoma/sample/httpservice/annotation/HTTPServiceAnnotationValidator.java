@@ -1,8 +1,7 @@
 package org.sameerajayasoma.sample.httpservice.annotation;
 
-import org.ballerinalang.annotation.AbstractAnnotationProcessor;
-import org.ballerinalang.annotation.AnnotationType;
-import org.ballerinalang.annotation.SupportedAnnotations;
+import org.ballerinalang.compiler.plugins.AbstractCompilerPlugin;
+import org.ballerinalang.compiler.plugins.SupportedAnnotationPackages;
 import org.ballerinalang.model.tree.ActionNode;
 import org.ballerinalang.model.tree.AnnotationAttachmentNode;
 import org.ballerinalang.model.tree.AnnotationNode;
@@ -17,6 +16,7 @@ import org.ballerinalang.util.diagnostic.Diagnostic;
 import org.ballerinalang.util.diagnostic.DiagnosticLog;
 
 import java.io.PrintStream;
+import java.nio.file.Path;
 import java.util.List;
 
 /**
@@ -24,19 +24,17 @@ import java.util.List;
  *
  * @since 1.0
  */
-@SupportedAnnotations(
-        value = {@AnnotationType(packageName = "ballerina.net.http", name = "configuration"),
-                @AnnotationType(packageName = "passthroughservice.samples", name = "doc"),
-                @AnnotationType(packageName = "ballerina.net.http", name = "resourceConfig")
-        }
+@SupportedAnnotationPackages(
+        value = "ballerina.net.http"
 )
-public class HTTPServiceAnnotationValidator extends AbstractAnnotationProcessor {
+public class HTTPServiceAnnotationValidator extends AbstractCompilerPlugin {
     DiagnosticLog dlog;
     PrintStream out = System.out;
 
     public void init(DiagnosticLog diagnosticLog) {
         this.dlog = diagnosticLog;
     }
+
 
     @Override
     public void process(ServiceNode serviceNode, List<AnnotationAttachmentNode> annotations) {
@@ -111,5 +109,10 @@ public class HTTPServiceAnnotationValidator extends AbstractAnnotationProcessor 
         for (AnnotationAttachmentNode attachmentNode : annotations) {
             out.println(attachmentNode.getAnnotationName().getValue());
         }
+    }
+
+    @Override
+    public void codeGenerated(Path binaryPath) {
+        out.println("executed code path: " + binaryPath);
     }
 }

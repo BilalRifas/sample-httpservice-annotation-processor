@@ -23,7 +23,7 @@
         <dependency>
             <groupId>org.ballerinalang</groupId>
             <artifactId>ballerina-lang</artifactId>
-            <version>0.96.1-SNAPSHOT</version>
+            <version>0.963.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>
